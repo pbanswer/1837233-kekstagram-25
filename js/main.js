@@ -54,12 +54,12 @@ const getArray = (arrLength) => {
     arr[i] = i + 1;
   }
   //взято с learn.javascript
-  function shuffle(array) {
+  const shuffle = (array) => {
     for (let i = array.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
       [array[i], array[j]] = [array[j], array[i]];
     }
-  }
+  };
   shuffle(arr);
   return arr;
 };
@@ -69,18 +69,25 @@ const arrUrl =  getArray(25);
 const arrCommentId =  getArray(99999);
 
 
-const createObject = () => ({
-  id: arrIds.shift(),
-  url: `photos/${ arrUrl.shift()  }.jpg`,
-  description: getRandomArrayElement(DESCRIPTION),
-  likes: getRandomIntInclusive(15,200),
-  comments: {
+const createObject = () => {
+  const createComment = () => ([{
     id: arrCommentId.shift(),
     avatar: `img/avatar-${  getRandomIntInclusive(0,6)  }.svg`,
     message: getRandomArrayElement(MESSAGE),
     name: getRandomArrayElement(NAME),
-  },
-});
+  }]);
+  const randomInt = getRandomIntInclusive(0,10);
+  const similarComments = () => Array.from({length: randomInt}, createComment);
+
+  return {
+    id: arrIds.shift(),
+    url: `photos/${ arrUrl.shift()  }.jpg`,
+    description: getRandomArrayElement(DESCRIPTION),
+    likes: getRandomIntInclusive(15,200),
+    comments: similarComments(),
+  };
+};
 
 const similarObjects = (objectCount) => Array.from({length: objectCount}, createObject);
 similarObjects();
+//console.log(similarObjects(4));

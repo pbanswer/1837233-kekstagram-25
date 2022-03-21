@@ -10,14 +10,14 @@ export {getRandomIntInclusive};
 
 const printRnd = getRandomIntInclusive(1,5);
 
-printRnd();
+//printRnd();
 
 
 // проверка длины строки
 const checkStrLength = (string, maxLength) => string.length < maxLength;
 
 const printLng = checkStrLength('Эта строка длиной 29 символов', 20);
-printLng();
+//printLng();
 
 const getRandomArrayElement = (elements) => elements[getRandomIntInclusive(0, elements.length - 1)];
 export {getRandomArrayElement};

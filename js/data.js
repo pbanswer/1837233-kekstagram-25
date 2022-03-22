@@ -2,7 +2,7 @@ import './util.js';
 import {getRandomArrayElement} from './util.js';
 import {getRandomIntInclusive} from './util.js';
 import {getArray} from './util.js';
-import {otherUsersPic} from './users_pic.js';
+import {createUsersPic} from './users_pic.js';
 // случайное число из диапазона
 // код взят с https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/Math/random
 // и немного изменен
@@ -60,10 +60,8 @@ const createObject = () => {
 
 const similarObjects = () => Array.from({length: OBJECT_COUNT}, createObject);
 similarObjects();
-//console.log(similarObjects(4));
-const array = similarObjects(4);
+//console.log(similarObjects());
 
-
-otherUsersPic();
 const userPicsContainer = document.querySelector('.pictures');
-userPicsContainer.appendChild(otherUsersPic());
+userPicsContainer.appendChild(createUsersPic(similarObjects));
+console.log(createUsersPic(similarObjects));

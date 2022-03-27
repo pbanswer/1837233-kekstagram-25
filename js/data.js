@@ -64,4 +64,4 @@ createSimilarObjects();
 
 const userPicsContainer = document.querySelector('.pictures');
 userPicsContainer.appendChild(createUsersPic(createSimilarObjects()));
-console.log(createUsersPic(createSimilarObjects()));
+//console.log(createUsersPic(createSimilarObjects()));

@@ -58,10 +58,10 @@ const createObject = () => {
   };
 };
 
-const similarObjects = () => Array.from({length: OBJECT_COUNT}, createObject);
-similarObjects();
+const createSimilarObjects = () => Array.from({length: OBJECT_COUNT}, createObject);
+createSimilarObjects();
 //console.log(similarObjects());
 
 const userPicsContainer = document.querySelector('.pictures');
-userPicsContainer.appendChild(createUsersPic(similarObjects));
-console.log(createUsersPic(similarObjects));
+userPicsContainer.appendChild(createUsersPic(createSimilarObjects()));
+console.log(createUsersPic(createSimilarObjects()));

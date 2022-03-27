@@ -15,7 +15,7 @@ const createUsersPic = (pictures) => {
 
 
     fragment.appendChild(templateCopy);
-    console.log(fragment.appendChild(templateCopy));
+    //console.log(fragment.appendChild(templateCopy));
   };
 
   return fragment;

@@ -47,7 +47,6 @@ const openBigPic = (pictures) => {
       bigUserPic.classList.add('hidden');
     }
   });
-
 };
 
 export {openBigPic};

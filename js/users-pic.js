@@ -16,7 +16,6 @@ const createUsersPic = (pictures) => {
     templateCopy.querySelector('.picture__likes').textContent = picture.likes;
 
     templateCopy.addEventListener('click', () => {
-      //console.log('клик');
       openBigPic(picture);
     });
 

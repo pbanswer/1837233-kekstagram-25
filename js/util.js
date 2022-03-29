@@ -7,6 +7,7 @@ const getRandomIntInclusive = (min, max) => {
 };
 
 // проверка длины строки
+
 const checkStrLength = (string, maxLength) => string.length < maxLength;
 
 const getRandomArrayElement = (elements) => elements[getRandomIntInclusive(0, elements.length - 1)];

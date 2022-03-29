@@ -1,4 +1,4 @@
-import { openBigPic } from "./big-user-pic.js";
+import { openBigPic } from './big-user-pic.js';
 
 const createUsersPic = (pictures) => {
   const fragment = document.createDocumentFragment();
@@ -15,13 +15,12 @@ const createUsersPic = (pictures) => {
 
     templateCopy.querySelector('.picture__likes').textContent = picture.likes;
 
+    templateCopy.addEventListener('click', () => {
+      //console.log('клик');
+      openBigPic(picture);
+    });
 
     fragment.appendChild(templateCopy);
-    //console.log(fragment.appendChild(templateCopy));
-
-    fragment.appendChild(templateCopy).addEventListener('click', () => {
-      openBigPic(picture);
-    })
   });
 
   return fragment;

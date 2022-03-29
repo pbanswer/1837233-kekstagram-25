@@ -7,9 +7,6 @@ const commentsList = bigUserPic.querySelector('.social__comments');
 
 const openBigPic = (pictures) => {
 
-  const commentBlock = commentsList.querySelector('.social__comment');
-  //const commentBlockImg = commentsList.querySelector('.social__picture');
-
   bigUserPic.classList.remove('hidden');
 
   bigPicImg.querySelector('img').src = pictures.url;
@@ -18,31 +15,33 @@ const openBigPic = (pictures) => {
 
 
   const commentFragment = document.createDocumentFragment();
-  const comments = pictures.comments;
-  console.log(comments);
-  comments.forEach((comment, i) => {
+  commentsList.innerHTML = '';
+
+  pictures.comments.forEach((comment) => {
 
     const template = document.querySelector('#comment-template').content;
-    console.log(template)
     const templateElement = template.querySelector('.social__comment');
     const templateCopy = templateElement.cloneNode(true);
 
-    templateCopy.classList.add(`social-comment-${ i + 1 }`);
-
-    templateCopy.querySelector('.social__picture').src = comment[i].avatar;
-    templateCopy.querySelector('.social__picture').alt = comment[i].name;
-    templateCopy.querySelector('.social__text').textContent = comment[i].message;
+    templateCopy.querySelector('.social__picture').src = comment.avatar;
+    templateCopy.querySelector('.social__picture').alt = comment.name;
+    templateCopy.querySelector('.social__text').textContent = comment.message;
     commentFragment.appendChild(templateCopy);
-    console.log(commentFragment.appendChild(templateCopy))
-  })
+    //console.log(commentFragment.appendChild(templateCopy));
+  });
+
+  commentsList.appendChild(commentFragment);
 
   bigUserPic.querySelector('.social__caption').textContent = pictures.description;
-
   bigUserPic.querySelector('.social__comment-count').classList.add('hidden');
   bigUserPic.querySelector('.comments-loader').classList.add('hidden');
   document.body.classList.add('modal-open');
-  
-  return commentFragment;
+
+  const closeButton = document.querySelector('.big-picture__cancel');
+  closeButton.addEventListener('click', () => {
+    bigUserPic.classList.add('hidden');
+  });
+
 };
 
 export {openBigPic};

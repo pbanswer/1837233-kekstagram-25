@@ -40,12 +40,12 @@ const OBJECT_COUNT = 4;
 
 
 const createObject = () => {
-  const createComment = () => ([{
+  const createComment = () => ({
     id: arrCommentId.shift(),
-    avatar: `img/avatar-${  getRandomIntInclusive(0,6)  }.svg`,
+    avatar: `img/avatar-${  getRandomIntInclusive(1,6)  }.svg`,
     message: getRandomArrayElement(MESSAGE),
     name: getRandomArrayElement(NAME),
-  }]);
+  });
   const randomInt = getRandomIntInclusive(0,10);
   const similarComments = () => Array.from({length: randomInt}, createComment);
 
@@ -69,7 +69,7 @@ const createObject = () => {
 
 const createSimilarObjects = () => Array.from({length: OBJECT_COUNT}, createObject);
 const value = createSimilarObjects();
-console.log(value);
+//console.log(value);
 
 const userPicsContainer = document.querySelector('.pictures');
 userPicsContainer.appendChild(createUsersPic(value));

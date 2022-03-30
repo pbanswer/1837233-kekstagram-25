@@ -5,19 +5,19 @@ const bigPicComments = bigUserPic.querySelector('.comments-count');
 const commentsList = bigUserPic.querySelector('.social__comments');
 
 
-const openBigPic = (pictures) => {
+const openBigPic = (picture) => {
 
   bigUserPic.classList.remove('hidden');
 
-  bigPicImg.querySelector('img').src = pictures.url;
-  bigPicLikes.textContent = pictures.likes;
-  bigPicComments.textContent = pictures.comments.length;
+  bigPicImg.querySelector('img').src = picture.url;
+  bigPicLikes.textContent = picture.likes;
+  bigPicComments.textContent = picture.comments.length;
 
 
   const commentFragment = document.createDocumentFragment();
   commentsList.innerHTML = '';
 
-  pictures.comments.forEach((comment) => {
+  picture.comments.forEach((comment) => {
 
     const template = document.querySelector('#comment-template').content;
     const templateElement = template.querySelector('.social__comment');
@@ -32,21 +32,31 @@ const openBigPic = (pictures) => {
 
   commentsList.appendChild(commentFragment);
 
-  bigUserPic.querySelector('.social__caption').textContent = pictures.description;
+  bigUserPic.querySelector('.social__caption').textContent = picture.description;
   bigUserPic.querySelector('.social__comment-count').classList.add('hidden');
   bigUserPic.querySelector('.comments-loader').classList.add('hidden');
   document.body.classList.add('modal-open');
 
   const closeButton = document.querySelector('.big-picture__cancel');
-  closeButton.addEventListener('click', () => {
-    bigUserPic.classList.add('hidden');
-  });
 
-  window.addEventListener('keydown', (evt) => {
-    if (evt.key === 'Escape') {
+  const onCloseClick = () => {
+    bigUserPic.classList.add('hidden');
+    closeButton.removeEventListener('click', onCloseClick);
+    window.removeEventListener('keydown', onEscKeydown);
+  };
+
+  const keyTap = 'Escape'
+
+  function onEscKeydown (evt) {
+    if (evt.key === keyTap) {
       bigUserPic.classList.add('hidden');
+      closeButton.removeEventListener('click', onCloseClick);
+      window.removeEventListener('keydown', onEscKeydown);
     }
-  });
+  };
+
+  closeButton.addEventListener('click', onCloseClick);
+  window.addEventListener('keydown', onEscKeydown);
 };
 
 export {openBigPic};

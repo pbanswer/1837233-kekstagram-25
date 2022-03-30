@@ -52,7 +52,7 @@ const openBigPic = (picture) => {
       closeButton.removeEventListener('click', onCloseClick);
       window.removeEventListener('keydown', onEscKeydown);
     }
-  };
+  }
 
   closeButton.addEventListener('click', onCloseClick);
   window.addEventListener('keydown', onEscKeydown);

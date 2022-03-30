@@ -45,8 +45,7 @@ const openBigPic = (picture) => {
     window.removeEventListener('keydown', onEscKeydown);
   };
 
-  const keyTap = 'Escape'
-
+  const keyTap = 'Escape';
   function onEscKeydown (evt) {
     if (evt.key === keyTap) {
       bigUserPic.classList.add('hidden');

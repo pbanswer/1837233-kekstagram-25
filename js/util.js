@@ -6,21 +6,11 @@ const getRandomIntInclusive = (min, max) => {
   }
 };
 
-export {getRandomIntInclusive};
-
-const printRnd = getRandomIntInclusive(1,5);
-
-printRnd();
-
-
 // проверка длины строки
+
 const checkStrLength = (string, maxLength) => string.length < maxLength;
 
-const printLng = checkStrLength('Эта строка длиной 29 символов', 20);
-printLng();
-
 const getRandomArrayElement = (elements) => elements[getRandomIntInclusive(0, elements.length - 1)];
-export {getRandomArrayElement};
 
 const getArray = (arrLength) => {
   const arr = [];
@@ -38,4 +28,4 @@ const getArray = (arrLength) => {
   return arr;
 };
 
-export {getArray};
+export {getArray, getRandomIntInclusive, checkStrLength, getRandomArrayElement};

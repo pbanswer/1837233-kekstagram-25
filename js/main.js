@@ -1,2 +1,2 @@
 import './data.js';
-import './users_pic.js';
+import './users-pic.js';

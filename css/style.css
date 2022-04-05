@@ -1403,3 +1403,11 @@ main {
 .hidden {
   display: none;
 }
+
+/*----------------------  custom styles---------------------- */
+.pristine-error {
+  text-transform: lowercase;
+  color: #ff6464;
+  margin: 0 auto;
+  max-width: 450px;
+}

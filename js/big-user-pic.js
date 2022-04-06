@@ -3,9 +3,14 @@ const bigPicImg = bigUserPic.querySelector('.big-picture__img');
 const bigPicLikes = bigUserPic.querySelector('.likes-count');
 const bigPicComments = bigUserPic.querySelector('.comments-count');
 const commentsList = bigUserPic.querySelector('.social__comments');
+const commentsCount = bigUserPic.querySelector('.social__comment-count');
+const moreCommentsButton = document.querySelector('.comments-loader');
 
+const KEYTAP = 'Escape';
+const COMMENTS_PER_PAGE = 5;
 
 const openBigPic = (picture) => {
+  let shownCommentsCount = 0;
 
   bigUserPic.classList.remove('hidden');
 
@@ -13,28 +18,50 @@ const openBigPic = (picture) => {
   bigPicLikes.textContent = picture.likes;
   bigPicComments.textContent = picture.comments.length;
 
-
-  const commentFragment = document.createDocumentFragment();
   commentsList.innerHTML = '';
 
-  picture.comments.forEach((comment) => {
+  const template = document.querySelector('#comment-template').content;
+  const templateElement = template.querySelector('.social__comment');
 
-    const template = document.querySelector('#comment-template').content;
-    const templateElement = template.querySelector('.social__comment');
-    const templateCopy = templateElement.cloneNode(true);
+  const showComments = () => {
+    const count = shownCommentsCount + COMMENTS_PER_PAGE > picture.comments.length
+      ? picture.comments.length
+      : shownCommentsCount + COMMENTS_PER_PAGE;
 
-    templateCopy.querySelector('.social__picture').src = comment.avatar;
-    templateCopy.querySelector('.social__picture').alt = comment.name;
-    templateCopy.querySelector('.social__text').textContent = comment.message;
-    commentFragment.appendChild(templateCopy);
-    //console.log(commentFragment.appendChild(templateCopy));
+    commentsCount.textContent = `${count} из ${picture.comments.length}`;
+    if (count >= picture.comments.length) {
+      moreCommentsButton.classList.add('hidden');
+    }
+
+    const commentFragment = document.createDocumentFragment();
+    for (let i = shownCommentsCount; i < count; i++) {
+      const templateCopy = templateElement.cloneNode(true);
+
+      templateCopy.querySelector('.social__picture').src = picture.comments[i].avatar;
+      templateCopy.querySelector('.social__picture').alt = picture.comments[i].name;
+      templateCopy.querySelector('.social__text').textContent = picture.comments[i].message;
+      commentFragment.appendChild(templateCopy);
+    }
+
+    commentsList.appendChild(commentFragment);
+    shownCommentsCount += COMMENTS_PER_PAGE;
+  };
+
+  if (picture.comments.length <= 5) {
+    commentsCount.classList.add('hidden');
+    moreCommentsButton.classList.add('hidden');
+  } else {
+    commentsCount.classList.remove('hidden');
+    moreCommentsButton.classList.remove('hidden');
+  }
+  showComments();
+
+  moreCommentsButton.addEventListener('click', () => {
+    showComments();
   });
 
-  commentsList.appendChild(commentFragment);
-
   bigUserPic.querySelector('.social__caption').textContent = picture.description;
-  bigUserPic.querySelector('.social__comment-count').classList.add('hidden');
-  bigUserPic.querySelector('.comments-loader').classList.add('hidden');
+
   document.body.classList.add('modal-open');
 
   const closeButton = document.querySelector('.big-picture__cancel');
@@ -45,9 +72,8 @@ const openBigPic = (picture) => {
     window.removeEventListener('keydown', onEscKeydown);
   };
 
-  const keyTap = 'Escape';
-  function onEscKeydown (evt) {
-    if (evt.key === keyTap) {
+  function onEscKeydown(evt) {
+    if (evt.key === KEYTAP) {
       bigUserPic.classList.add('hidden');
       closeButton.removeEventListener('click', onCloseClick);
       window.removeEventListener('keydown', onEscKeydown);

@@ -1,8 +1,9 @@
 // валидация формы
 
+const KEYTAP = 'Escape';
+const MAXTAGSLENGTH = 5;
 const form = document.querySelector('.img-upload__form');
 const hashtags = form.querySelector('.text__hashtags');
-const KEYTAP = 'Escape';
 
 const pristine = new window.Pristine(form, {
   classTo: 'img-upload__text',
@@ -18,6 +19,7 @@ const checkDuplicate = (tags) => {
   const duplicates = [];
   const sortedTags = tags.sort();
   for (let i = 0; i < sortedTags.length; i++) {
+    sortedTags[i].toLowerCase();
     if (sortedTags[i + 1] === sortedTags[i]) {
       duplicates.push(sortedTags[i]);
     }
@@ -33,7 +35,7 @@ const checkHashTag = () => {
     return false;
   }
 
-  if (tags.length > 5) {
+  if (tags.length > MAXTAGSLENGTH) {
     return false;
   }
 
@@ -53,11 +55,6 @@ pristine.addValidator(
   '- Хэштег состоит из букв и чисел, от 2 до 20 символов <br>- начинается с решётки, максимум 5 хэштегов, без повторений <br>- комментарий не более 140 символов'
 );
 
-form.addEventListener('submit', (evt) => {
-  if (!pristine.validate()) {
-    evt.preventDefault();
-  }
-});
 
 const inputUploadFile = document.querySelector('#upload-file');
 const imageEditForm = document.querySelector('.img-upload__overlay');
@@ -66,24 +63,43 @@ const documentBody = document.querySelector('body');
 const commentField = document.querySelector('.text__description');
 
 
-const onInputChange = () => {
-  imageEditForm.classList.remove('hidden');
-  documentBody.classList.add('modal-open');
-};
-
-inputUploadFile.addEventListener('change', onInputChange);
-
 const onCloseButton = () => {
   imageEditForm.classList.add('hidden');
   documentBody.classList.remove('modal-open');
+  inputUploadFile.value = '';
+
+  formButtonCancel.removeEventListener('click', onCloseButton);
+  window.removeEventListener('keydown', onEscKeydown );
+  form.removeEventListener('submit');
 };
 
 function onEscKeydown(evt) {
   if ((evt.key === KEYTAP) && (evt.target !== hashtags) && (evt.target !== commentField)) {
     imageEditForm.classList.add('hidden');
     documentBody.classList.remove('modal-open');
+    inputUploadFile.value = '';
+
+    formButtonCancel.removeEventListener('click', onCloseButton);
+    window.removeEventListener('keydown', onEscKeydown );
+    form.removeEventListener('submit', (evt));
   }
 }
+const onInputChange = () => {
+  imageEditForm.classList.remove('hidden');
+  documentBody.classList.add('modal-open');
+
+
+  form.addEventListener('submit', (evt) => {
+    if (!pristine.validate()) {
+      evt.preventDefault();
+    }
+  });
+  formButtonCancel.addEventListener('click', onCloseButton);
+  window.addEventListener('keydown', onEscKeydown );
+};
+
+inputUploadFile.addEventListener('change', onInputChange);
+
 
 formButtonCancel.addEventListener('click', onCloseButton);
 window.addEventListener('keydown', onEscKeydown );

@@ -14,22 +14,22 @@ const setImageScale = (val) => {
   imagePreview.style.transform = `scale(${val/100})`;
 };
 
-scaleUpButton.addEventListener('click', () => {
+const onScaleUpClick = () => {
   const scaleVal = Number.parseInt(scaleValue.value, 10);
   if (scaleVal <= 75 && scaleVal >= 25) {
     scaleValue.value = `${scaleVal + 25  }%`;
     setImageScale(Number.parseInt(scaleValue.value, 10));
   }
-});
+};
 
-scaleDownButton.addEventListener('click', () => {
+
+const onScaleDownClick = () => {
   const scaleVal = Number.parseInt(scaleValue.value, 10);
   if (scaleVal <= 100 && scaleVal > 25) {
     scaleValue.value = `${scaleVal - 25  }%`;
     setImageScale(Number.parseInt(scaleValue.value, 10));
   }
-});
-
+};
 
 // смена эффектов и слайдер
 const hideSliderContainer = (param) => {
@@ -39,27 +39,6 @@ const hideSliderContainer = (param) => {
 };
 
 sliderInput.value = 100;
-
-noUiSlider.create(slider, {
-  range: {
-    min: 0,
-    max: 100,
-  },
-  start: 100,
-  step: 1,
-  connect: 'lower',
-  format: {
-    to: function (value) {
-      if (Number.isInteger(value)) {
-        return value.toFixed(0);
-      }
-      return value.toFixed(1);
-    },
-    from: function (value) {
-      return parseFloat(value);
-    },
-  },
-});
 
 const setEffectValue = (buttonEffect) => {
   slider.noUiSlider.on('update', () => {
@@ -138,7 +117,7 @@ const setImgEffect = (evt) => {
   }
 };
 
-radioList.addEventListener('change', (evt) => {
+const onEffectChange = (evt) => {
   const buttonEffect = evt.target.value;
   const classToAdd = `effects__preview--${buttonEffect}`;
   if (evt.target.checked) {
@@ -153,4 +132,41 @@ radioList.addEventListener('change', (evt) => {
   }
   setEffectValue(buttonEffect);
   //console.log(buttonEffect);
-});
+};
+
+
+const bindSliderEvents = () => {
+  scaleUpButton.addEventListener('click', onScaleUpClick);
+  scaleDownButton.addEventListener('click', onScaleDownClick);
+  radioList.addEventListener('change', onEffectChange);
+
+  noUiSlider.create(slider, {
+    range: {
+      min: 0,
+      max: 100,
+    },
+    start: 100,
+    step: 1,
+    connect: 'lower',
+    format: {
+      to: function (value) {
+        if (Number.isInteger(value)) {
+          return value.toFixed(0);
+        }
+        return value.toFixed(1);
+      },
+      from: function (value) {
+        return parseFloat(value);
+      },
+    },
+  });
+};
+
+const removeSliderEvents = () => {
+  slider.noUiSlider.destroy();
+  scaleUpButton.removeEventListener('click', onScaleUpClick);
+  scaleDownButton.removeEventListener('click', onScaleDownClick);
+  radioList.removeEventListener('change', onEffectChange);
+};
+
+export {bindSliderEvents, removeSliderEvents};

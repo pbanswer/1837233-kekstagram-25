@@ -1,4 +1,4 @@
-const KEYTAP = 'Escape';
+const KEY_TAP = 'Escape';
 const COMMENTS_PER_PAGE = 5;
 const bigUserPic = document.querySelector('.big-picture');
 const bigPicImg = bigUserPic.querySelector('.big-picture__img');
@@ -73,7 +73,7 @@ const openBigPic = (picture) => {
   };
 
   function onEscKeydown(evt) {
-    if (evt.key === KEYTAP) {
+    if (evt.key === KEY_TAP) {
       bigUserPic.classList.add('hidden');
       closeButton.removeEventListener('click', onCloseClick);
       window.removeEventListener('keydown', onEscKeydown);

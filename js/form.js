@@ -23,16 +23,13 @@ const checkDuplicate = (tags) => {
   const arrayLowerCase = [];
   for(let i = 0; i < tags.length; i++) {
     arrayLowerCase.push(tags[i].toLowerCase());
-    console.log(arrayLowerCase);
   }
   const sortedTags = arrayLowerCase.sort();
-  console.log(sortedTags);
   for (let i = 0; i < sortedTags.length; i++) {
     if (sortedTags[i + 1] === sortedTags[i]) {
       duplicates.push(sortedTags[i]);
     }
   }
-  console.log(duplicates);
   return duplicates.length >= 1;
 };
 
@@ -104,7 +101,7 @@ const setDefaultImageSettings = () => {
   imagePreview.style.filter = 'none';
   imagePreview.style.transform = 'scale(1)';
   slider.classList.add('visually-hidden');
-}
+};
 
 function onCloseButton () {
   closeForm();

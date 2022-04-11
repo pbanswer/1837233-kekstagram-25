@@ -1,3 +1,5 @@
+const KEY_TAP = 'Escape';
+const COMMENTS_PER_PAGE = 5;
 const bigUserPic = document.querySelector('.big-picture');
 const bigPicImg = bigUserPic.querySelector('.big-picture__img');
 const bigPicLikes = bigUserPic.querySelector('.likes-count');
@@ -6,8 +8,6 @@ const commentsList = bigUserPic.querySelector('.social__comments');
 const commentsCount = bigUserPic.querySelector('.social__comment-count');
 const moreCommentsButton = document.querySelector('.comments-loader');
 
-const KEYTAP = 'Escape';
-const COMMENTS_PER_PAGE = 5;
 
 const openBigPic = (picture) => {
   let shownCommentsCount = 0;
@@ -73,7 +73,7 @@ const openBigPic = (picture) => {
   };
 
   function onEscKeydown(evt) {
-    if (evt.key === KEYTAP) {
+    if (evt.key === KEY_TAP) {
       bigUserPic.classList.add('hidden');
       closeButton.removeEventListener('click', onCloseClick);
       window.removeEventListener('keydown', onEscKeydown);

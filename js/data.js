@@ -69,7 +69,7 @@ const createObject = () => {
 
 const createSimilarObjects = () => Array.from({length: OBJECT_COUNT}, createObject);
 const value = createSimilarObjects();
-//console.log(value);
+console.log(value);
 
 const userPicsContainer = document.querySelector('.pictures');
-userPicsContainer.appendChild(createUsersPic(value));
+//userPicsContainer.appendChild(createUsersPic(value));

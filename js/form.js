@@ -1,4 +1,6 @@
 import {bindSliderEvents, removeSliderEvents} from './image-modify.js';
+import {raiseUploadError} from './server.js';
+import {raiseUploadSuccess} from './server.js';
 
 const KEY_TAP = 'Escape';
 const MAX_TAGS_LENGTH = 5;
@@ -68,10 +70,56 @@ const formButtonCancel = document.querySelector('.img-upload__cancel');
 const documentBody = document.querySelector('body');
 const commentField = document.querySelector('.text__description');
 
+
 const onSubmit = (evt) => {
-  if (!pristine.validate()) {
-    evt.preventDefault();
+  //if (!pristine.validate()) {
+  evt.preventDefault();
+  const isValid = pristine.validate();
+  if (isValid) {
+    console.log('Можно отправлять');
+    const formData = new FormData(evt.target);
+
+    fetch(
+      'https://25.javascript.pages.academy/kekstagram',
+      {
+        method: 'POST',
+        body: formData,
+      },
+    )
+      .then((response) => {
+        if (response.ok) {
+          closeForm();
+          document.body.appendChild(raiseUploadSuccess());
+          document.querySelector('.success__button').addEventListener('click', closeMessageSuccess);
+
+        } else {
+          console.log('else');
+          form.appendChild(raiseUploadError());
+          document.querySelector('.error__button').addEventListener('click', closeMessageError);
+        }
+      })
+      .catch(() => {
+        console.log('кэтч');
+        document.body.appendChild(raiseUploadError());
+        document.querySelector('.error__button').addEventListener('click', closeMessageError);
+      });
+
+  } else {
+    console.log('Форма невалидна');
   }
+
+};
+
+const closeMessageSuccess = () => {
+  const messageSuccess = document.querySelector('.success');
+  document.body.removeChild(messageSuccess);
+  document.querySelector('.success__button').removeEventListener('click', closeMessageSuccess);
+};
+
+const closeMessageError = () => {
+  const messageError = document.querySelector('.error');
+  document.body.removeChild(messageError);
+  document.querySelector('.error__button').removeEventListener('click', closeMessageError);
 };
 
 const onInputChange = () => {

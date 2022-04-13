@@ -31,7 +31,7 @@
       <section class="img-upload">
         <div class="img-upload__wrapper">
           <h2 class="img-upload__title  visually-hidden">Загрузка фотографии</h2>
-          <form class="img-upload__form" id="upload-select-image" method="post" action="https://25.javascript.pages.academy/kekstagram" enctype="multipart/form-data" autocomplete="off">
+          <form class="img-upload__form" id="upload-select-image" method="post"  enctype="multipart/form-data" autocomplete="off"> <!-- action="https://25.javascript.pages.academy/kekstagram" -->
 
             <!-- Изначальное состояние поля для загрузки изображения -->
             <fieldset class="img-upload__start">
@@ -214,12 +214,22 @@
     </li>
   </template>
 
-  <!-- Сообщение с ошибкой загрузки изображения -->
-  <template id="error">
+  <!-- Сообщение с ошибкой загрузки изображений с сервера -->
+  <template id="download-error">
     <section class="error">
       <div class="error__inner">
+        <h2 class="error__title">Ошибка загрузки изображений с сервера</h2>
+        <button type="button" class="error__button">Попробовать ещё раз</button>
+      </div>
+    </section>
+  </template>
+
+  <!-- Сообщение с ошибкой загрузки изображения -->
+  <template id="error">
+    <section class="error" style="z-index: 2;">
+      <div class="error__inner">
         <h2 class="error__title">Ошибка загрузки файла</h2>
-        <button type="button" class="error__button">Загрузить другой файл</button>
+        <button type="button" class="error__button">Загрузить ещё раз</button>
       </div>
     </section>
   </template>

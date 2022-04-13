@@ -46,6 +46,10 @@ const checkHashTag = () => {
   if (tags.length > MAX_TAGS_LENGTH) {
     return false;
   }
+  const arrForCheck = [''];
+  if (tags[0] === arrForCheck[0] && tags.length === 1) {
+    return true;
+  }
 
   for (let i = 0; i < tags.length; i++) {
     const re = /^#[A-Za-zА-Яа-яЁё0-9]{1,19}$/i;
@@ -70,69 +74,6 @@ const formButtonCancel = document.querySelector('.img-upload__cancel');
 const documentBody = document.querySelector('body');
 const commentField = document.querySelector('.text__description');
 
-
-const onSubmit = (evt) => {
-  //if (!pristine.validate()) {
-  evt.preventDefault();
-  const isValid = pristine.validate();
-  if (isValid) {
-    console.log('Можно отправлять');
-    const formData = new FormData(evt.target);
-
-    fetch(
-      'https://25.javascript.pages.academy/kekstagram',
-      {
-        method: 'POST',
-        body: formData,
-      },
-    )
-      .then((response) => {
-        if (response.ok) {
-          closeForm();
-          document.body.appendChild(raiseUploadSuccess());
-          document.querySelector('.success__button').addEventListener('click', closeMessageSuccess);
-
-        } else {
-          console.log('else');
-          form.appendChild(raiseUploadError());
-          document.querySelector('.error__button').addEventListener('click', closeMessageError);
-        }
-      })
-      .catch(() => {
-        console.log('кэтч');
-        document.body.appendChild(raiseUploadError());
-        document.querySelector('.error__button').addEventListener('click', closeMessageError);
-      });
-
-  } else {
-    console.log('Форма невалидна');
-  }
-
-};
-
-const closeMessageSuccess = () => {
-  const messageSuccess = document.querySelector('.success');
-  document.body.removeChild(messageSuccess);
-  document.querySelector('.success__button').removeEventListener('click', closeMessageSuccess);
-};
-
-const closeMessageError = () => {
-  const messageError = document.querySelector('.error');
-  document.body.removeChild(messageError);
-  document.querySelector('.error__button').removeEventListener('click', closeMessageError);
-};
-
-const onInputChange = () => {
-  bindSliderEvents();
-
-  imageEditForm.classList.remove('hidden');
-  documentBody.classList.add('modal-open');
-
-  form.addEventListener('submit', onSubmit);
-  formButtonCancel.addEventListener('click', onCloseButton);
-  window.addEventListener('keydown', onEscKeydown);
-};
-
 const closeForm = () => {
   removeSliderEvents();
 
@@ -145,10 +86,90 @@ const closeForm = () => {
   form.removeEventListener('submit', onSubmit);
 };
 
+const closeMessageSuccess = () => {
+  const messageSuccess = document.querySelector('.success');
+  document.body.removeChild(messageSuccess);
+  //document.querySelector('.success__button').removeEventListener('click', closeMessageSuccess);
+};
+
+const closeOnEscMessageSuccess = (evt) => {
+  if (evt.key === KEY_TAP) {
+    const messageSuccess = document.querySelector('.success');
+    document.body.removeChild(messageSuccess);
+    window.removeEventListener('click', closeOnEscMessageSuccess);
+  }
+};
+
+const closeMessageError = () => {
+  const messageError = document.querySelector('.error');
+  document.body.removeChild(messageError);
+  //document.querySelector('.error__button').removeEventListener('click', closeMessageError);
+};
+
+const closeOnEscMessageError = () => {
+  const messageError = document.querySelector('.error');
+  document.body.removeChild(messageError);
+  window.removeEventListener('click', closeOnEscMessageError);
+};
+
 const setDefaultImageSettings = () => {
   imagePreview.style.filter = 'none';
   imagePreview.style.transform = 'scale(1)';
   slider.classList.add('visually-hidden');
+};
+
+const onSubmit = (evt) => {
+  //if (!pristine.validate()) {
+  evt.preventDefault();
+  const isValid = pristine.validate();
+  if (isValid) {
+    //console.log('Можно отправлять');
+    const formData = new FormData(evt.target);
+
+    fetch(
+      'https://25.javascript.pages.academy/kekstagram',
+      {
+        method: 'POST',
+        body: formData,
+      },
+    )
+      .then((response) => {
+        if (response.ok) {
+          setDefaultImageSettings();
+          closeForm();
+          document.body.appendChild(raiseUploadSuccess());
+          document.querySelector('.success__button').addEventListener('click', closeMessageSuccess);
+          window.addEventListener('keydown', closeOnEscMessageSuccess);
+
+        } else {
+          //console.log('else');
+          form.appendChild(raiseUploadError());
+          document.querySelector('.error__button').addEventListener('click', closeMessageError);
+          window.addEventListener('keydown', closeOnEscMessageError);
+        }
+      })
+      .catch(() => {
+        //console.log('кэтч');
+        document.body.appendChild(raiseUploadError());
+        document.querySelector('.error__button').addEventListener('click', closeMessageError);
+        window.addEventListener('keydown', closeOnEscMessageError);
+      });
+
+  } else {
+    //console.log('Форма невалидна');
+  }
+
+};
+
+const onInputChange = () => {
+  bindSliderEvents();
+
+  imageEditForm.classList.remove('hidden');
+  documentBody.classList.add('modal-open');
+
+  form.addEventListener('submit', onSubmit);
+  formButtonCancel.addEventListener('click', onCloseButton);
+  window.addEventListener('keydown', onEscKeydown);
 };
 
 function onCloseButton () {

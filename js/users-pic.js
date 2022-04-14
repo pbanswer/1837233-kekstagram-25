@@ -1,4 +1,5 @@
 import { openBigPic } from './big-user-pic.js';
+const userPicsContainer = document.querySelector('.pictures')
 
 const createUsersPic = (pictures) => {
   const fragment = document.createDocumentFragment();
@@ -22,7 +23,8 @@ const createUsersPic = (pictures) => {
     fragment.appendChild(templateCopy);
   });
 
-  return fragment;
+  //return fragment;
+  userPicsContainer.appendChild(fragment);
 };
 
 export {createUsersPic};

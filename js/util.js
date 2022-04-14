@@ -28,4 +28,12 @@ const getArray = (arrLength) => {
   return arr;
 };
 
-export {getArray, getRandomIntInclusive, checkStrLength, getRandomArrayElement};
+const debounce = (callback, timeoutDelay) => {
+  let timeoutId;
+  return (...rest) => {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
+  };
+}
+
+export {getArray, getRandomIntInclusive, checkStrLength, getRandomArrayElement, debounce};

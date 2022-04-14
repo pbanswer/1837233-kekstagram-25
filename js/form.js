@@ -9,6 +9,7 @@ const hashtags = form.querySelector('.text__hashtags');
 const imagePreviewWrap = document.querySelector('.img-upload__preview');
 const imagePreview = imagePreviewWrap.querySelector('img');
 const slider = document.querySelector('.img-upload__effect-level');
+const scaleValue = document.querySelector('.scale__control--value');
 
 
 const pristine = new window.Pristine(form, {
@@ -80,6 +81,7 @@ const closeForm = () => {
   imageEditForm.classList.add('hidden');
   documentBody.classList.remove('modal-open');
   inputUploadFile.value = '';
+  scaleValue.value = '100%';
 
   formButtonCancel.removeEventListener('click', onCloseButton);
   window.removeEventListener('keydown', onEscKeydown );
@@ -96,7 +98,6 @@ const closeOnEscMessageSuccess = (evt) => {
   if (evt.key === KEY_TAP) {
     const messageSuccess = document.querySelector('.success');
     document.body.removeChild(messageSuccess);
-    window.removeEventListener('click', closeOnEscMessageSuccess);
   }
 };
 
@@ -118,12 +119,11 @@ const setDefaultImageSettings = () => {
   slider.classList.add('visually-hidden');
 };
 
-const onSubmit = (evt) => {
-  //if (!pristine.validate()) {
+function onSubmit (evt) {
   evt.preventDefault();
   const isValid = pristine.validate();
   if (isValid) {
-    //console.log('Можно отправлять');
+
     const formData = new FormData(evt.target);
 
     fetch(
@@ -142,14 +142,12 @@ const onSubmit = (evt) => {
           window.addEventListener('keydown', closeOnEscMessageSuccess);
 
         } else {
-          //console.log('else');
           form.appendChild(raiseUploadError());
           document.querySelector('.error__button').addEventListener('click', closeMessageError);
           window.addEventListener('keydown', closeOnEscMessageError);
         }
       })
       .catch(() => {
-        //console.log('кэтч');
         document.body.appendChild(raiseUploadError());
         document.querySelector('.error__button').addEventListener('click', closeMessageError);
         window.addEventListener('keydown', closeOnEscMessageError);
@@ -158,8 +156,7 @@ const onSubmit = (evt) => {
   } else {
     //console.log('Форма невалидна');
   }
-
-};
+}
 
 const onInputChange = () => {
   bindSliderEvents();

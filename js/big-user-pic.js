@@ -55,10 +55,8 @@ const openBigPic = (picture) => {
     moreCommentsButton.classList.remove('hidden');
   }
   showComments();
-
-  moreCommentsButton.addEventListener('click', () => {
-    showComments();
-  });
+  const onMoreCommentsClick = () => showComments();
+  moreCommentsButton.addEventListener('click', onMoreCommentsClick);
 
   bigUserPic.querySelector('.social__caption').textContent = picture.description;
 
@@ -68,6 +66,8 @@ const openBigPic = (picture) => {
 
   const onCloseClick = () => {
     bigUserPic.classList.add('hidden');
+    document.body.classList.remove('modal-open');
+    moreCommentsButton.removeEventListener('click', onMoreCommentsClick);
     closeButton.removeEventListener('click', onCloseClick);
     window.removeEventListener('keydown', onEscKeydown);
   };
@@ -75,6 +75,8 @@ const openBigPic = (picture) => {
   function onEscKeydown(evt) {
     if (evt.key === KEY_TAP) {
       bigUserPic.classList.add('hidden');
+      document.body.classList.remove('modal-open');
+      moreCommentsButton.removeEventListener('click', onMoreCommentsClick);
       closeButton.removeEventListener('click', onCloseClick);
       window.removeEventListener('keydown', onEscKeydown);
     }

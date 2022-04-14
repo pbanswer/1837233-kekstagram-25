@@ -8,8 +8,6 @@ const sliderContainer = document.querySelector('.img-upload__effect-level');
 const slider = document.querySelector('.effect-level__slider');
 const sliderInput = document.querySelector('.effect-level__value');
 
-
-//изменение масштаба изображения
 const setImageScale = (val) => {
   imagePreview.style.transform = `scale(${val/100})`;
 };
@@ -22,7 +20,6 @@ const onScaleUpClick = () => {
   }
 };
 
-
 const onScaleDownClick = () => {
   const scaleVal = Number.parseInt(scaleValue.value, 10);
   if (scaleVal <= 100 && scaleVal > 25) {
@@ -31,7 +28,6 @@ const onScaleDownClick = () => {
   }
 };
 
-// смена эффектов и слайдер
 const hideSliderContainer = (param) => {
   if (param.target.value === 'none') {
     sliderContainer.classList.add('visually-hidden');
@@ -131,9 +127,7 @@ const onEffectChange = (evt) => {
     setImgEffect(evt);
   }
   setEffectValue(buttonEffect);
-  //console.log(buttonEffect);
 };
-
 
 const bindSliderEvents = () => {
   scaleUpButton.addEventListener('click', onScaleUpClick);

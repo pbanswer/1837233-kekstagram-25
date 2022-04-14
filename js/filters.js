@@ -1,6 +1,7 @@
 import { createUsersPic } from './users-pic.js';
 import {loadImages} from './server.js';
 import {debounce} from './util.js';
+import {shuffleArray} from './util.js';
 const RERENDER_DELAY = 500;
 const RANDOM_PICTURES_COUNT = 10;
 const filtersElement = document.querySelector('.img-filters');
@@ -16,23 +17,14 @@ const cleanPictures = () => {
   });
 };
 
-const shuffleArray = (array) => {
-  for (let i = array.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [array[i], array[j]] = [array[j], array[i]];
-  }
-  const shuffledArray = array;
-  return shuffledArray;
-};
-
 const compare = (a, b) => b.comments.length - a.comments.length;
 
-const closeEventListener = () => {
+const onWindowLoad = () => {
   filtersElement.classList.remove('img-filters--inactive');
-  window.removeEventListener('load', closeEventListener);
+  window.removeEventListener('load', onWindowLoad);
 };
 
-window.addEventListener('load', closeEventListener);
+window.addEventListener('load', onWindowLoad);
 
 
 const checkButtonClass = (evt) => {

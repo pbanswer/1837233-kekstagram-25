@@ -4,7 +4,7 @@ const closeDownloadError = () => {
   window.location.reload();
 };
 
-const createLoader = (/* onSuccess, */ onError) => () => fetch(
+const createLoader = (onError) => () => fetch(
   'https://25.javascript.pages.academy/kekstagram/data',
   {
     method: 'GET',
@@ -17,18 +17,10 @@ const createLoader = (/* onSuccess, */ onError) => () => fetch(
     }
     throw new Error(`${response.status} ${response.statusText}`);
   })
-/* .then((data) => {
-      //console.log('Результат', data);
-      userPicsContainer.appendChild(onSuccess(data));
-    }) */
   .catch((err) => {
-    //console.log('Ошибка', err);
     userPicsContainer.appendChild(onError(err));
     document.querySelector('.error__button').addEventListener('click', closeDownloadError);
   });
-
-
-/* export {createLoader}; */
 
 const raiseDownloadError = () => {
   const fragment = document.createDocumentFragment();

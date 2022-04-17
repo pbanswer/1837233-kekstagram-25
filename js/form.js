@@ -13,10 +13,10 @@ const scaleValue = document.querySelector('.scale__control--value');
 
 
 const pristine = new window.Pristine(form, {
-  classTo: 'img-upload__text',
+  classTo: 'text__group',
   errorClass: 'img-upload__text--invalid',
   successClass: 'img-upload__text--valid',
-  errorTextParent: 'img-upload__text',
+  errorTextParent: 'text__group',
   errorTextTag: 'div',
   errorTextClass: 'form__error'
 });
@@ -38,7 +38,7 @@ const checkDuplicate = (tags) => {
 
 const checkHashTag = () => {
   const tagsInput = form.querySelector('.text__hashtags');
-  const tags = tagsInput.value.split(' ');
+  const tags = tagsInput.value.split(' ').filter((tag) => tag);
 
   if (checkDuplicate(tags)) {
     return false;
@@ -86,11 +86,14 @@ const closeForm = () => {
   formButtonCancel.removeEventListener('click', onCloseButton);
   window.removeEventListener('keydown', onEscKeydown );
   form.removeEventListener('submit', onSubmit);
+  form.reset();
+  pristine.reset();
 };
 
 const closeMessageSuccess = () => {
   const messageSuccess = document.querySelector('.success');
   document.body.removeChild(messageSuccess);
+  //window.removeEventListener('keydown', closeOnEscMessageError);
   //document.querySelector('.success__button').removeEventListener('click', closeMessageSuccess);
 };
 
@@ -98,19 +101,21 @@ const closeOnEscMessageSuccess = (evt) => {
   if (evt.key === KEY_TAP) {
     const messageSuccess = document.querySelector('.success');
     document.body.removeChild(messageSuccess);
+    //window.removeEventListener('keydown', closeOnEscMessageError);
   }
 };
 
 const closeMessageError = () => {
   const messageError = document.querySelector('.error');
   document.body.removeChild(messageError);
+  //window.removeEventListener('keydown', closeOnEscMessageError);
   //document.querySelector('.error__button').removeEventListener('click', closeMessageError);
 };
 
 const closeOnEscMessageError = () => {
   const messageError = document.querySelector('.error');
   document.body.removeChild(messageError);
-  window.removeEventListener('click', closeOnEscMessageError);
+  window.removeEventListener('keydown', closeOnEscMessageError);
 };
 
 const setDefaultImageSettings = () => {
@@ -142,7 +147,7 @@ function onSubmit (evt) {
           window.addEventListener('keydown', closeOnEscMessageSuccess);
 
         } else {
-          form.appendChild(raiseUploadError());
+          document.body.appendChild(raiseUploadError());
           document.querySelector('.error__button').addEventListener('click', closeMessageError);
           window.addEventListener('keydown', closeOnEscMessageError);
         }
@@ -151,10 +156,7 @@ function onSubmit (evt) {
         document.body.appendChild(raiseUploadError());
         document.querySelector('.error__button').addEventListener('click', closeMessageError);
         window.addEventListener('keydown', closeOnEscMessageError);
-      });
-
-  } else {
-    //console.log('Форма невалидна');
+    });
   }
 }
 

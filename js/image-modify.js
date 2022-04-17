@@ -10,6 +10,7 @@ const radioList = document.querySelector('.effects__list');
 const sliderContainer = document.querySelector('.img-upload__effect-level');
 const slider = document.querySelector('.effect-level__slider');
 const sliderInput = document.querySelector('.effect-level__value');
+sliderInput.value = 100;
 
 const setImageScale = (val) => {
   imagePreview.style.transform = `scale(${val/100})`;
@@ -36,8 +37,6 @@ const hideSliderContainer = (param) => {
     sliderContainer.classList.add('visually-hidden');
   }
 };
-
-sliderInput.value = 100;
 
 const setEffectValue = (buttonEffect) => {
   slider.noUiSlider.on('update', () => {

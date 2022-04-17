@@ -1,6 +1,5 @@
 import { openBigPic } from './big-user-pic.js';
 const userPicsContainer = document.querySelector('.pictures');
-
 const createUsersPic = (pictures) => {
   const fragment = document.createDocumentFragment();
   if (pictures) {

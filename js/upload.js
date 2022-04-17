@@ -10,3 +10,4 @@ inputFile.addEventListener('change', () => {
     previewImage.src = URL.createObjectURL(file);
   }
 });
+

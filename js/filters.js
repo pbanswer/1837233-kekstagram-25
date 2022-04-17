@@ -4,7 +4,6 @@ import {debounce} from './util.js';
 import {shuffleArray} from './util.js';
 const RERENDER_DELAY = 500;
 const RANDOM_PICTURES_COUNT = 10;
-const filtersElement = document.querySelector('.img-filters');
 const filterButtonsContainer = document.querySelector('.img-filters__form');
 const buttonDefault = document.querySelector('#filter-default');
 const buttonRandom = document.querySelector('#filter-random');
@@ -18,14 +17,6 @@ const cleanPictures = () => {
 };
 
 const compare = (a, b) => b.comments.length - a.comments.length;
-
-/* const onWindowLoad = () => {
-  filtersElement.classList.remove('img-filters--inactive');
-  window.removeEventListener('load', onWindowLoad);
-};
-
-window.addEventListener('load', onWindowLoad); */
-
 
 const checkButtonClass = (evt) => {
   const selectedButton = document.querySelector('.img-filters__button--active');

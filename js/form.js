@@ -4,8 +4,10 @@ import {raiseUploadSuccess} from './server.js';
 
 const KEY_TAP = 'Escape';
 const MAX_TAGS_LENGTH = 5;
+const MAX_COMMENT_LENGTH = 140;
 const form = document.querySelector('.img-upload__form');
 const hashtags = form.querySelector('.text__hashtags');
+const comments = form.querySelector('.text__description');
 const imagePreviewWrap = document.querySelector('.img-upload__preview');
 const imagePreview = imagePreviewWrap.querySelector('img');
 const slider = document.querySelector('.img-upload__effect-level');
@@ -24,7 +26,7 @@ const pristine = new window.Pristine(form, {
 const checkDuplicate = (tags) => {
   const duplicates = [];
   const lowerCaseTags = [];
-  for(let i = 0; i < tags.length; i++) {
+  for (let i = 0; i < tags.length; i++) {
     lowerCaseTags.push(tags[i].toLowerCase());
   }
   const sortedTags = lowerCaseTags.sort();
@@ -65,7 +67,13 @@ const checkHashTag = () => {
 pristine.addValidator(
   hashtags,
   checkHashTag,
-  '- Хэштег состоит из букв и чисел, от 2 до 20 символов <br>- начинается с решётки, максимум 5 хэштегов, без повторений <br>- комментарий не более 140 символов'
+  '- Хэштег состоит из букв и чисел, от 2 до 20 символов <br>- начинается с решётки, максимум 5 хэштегов, без повторений'
+);
+
+pristine.addValidator(
+  comments,
+  (value) => value.length <= MAX_COMMENT_LENGTH,
+  '- комментарий не более 140 символов'
 );
 
 
@@ -75,56 +83,77 @@ const formButtonCancel = document.querySelector('.img-upload__cancel');
 const documentBody = document.querySelector('body');
 const commentField = document.querySelector('.text__description');
 
-const closeForm = () => {
-  removeSliderEvents();
-
-  imageEditForm.classList.add('hidden');
-  documentBody.classList.remove('modal-open');
-  inputUploadFile.value = '';
-  scaleValue.value = '100%';
-
-  formButtonCancel.removeEventListener('click', onCloseButton);
-  window.removeEventListener('keydown', onEscKeydown );
-  form.removeEventListener('submit', onSubmit);
-  form.reset();
-  pristine.reset();
-};
-
-const closeMessageSuccess = () => {
-  const messageSuccess = document.querySelector('.success');
-  document.body.removeChild(messageSuccess);
-  //window.removeEventListener('keydown', closeOnEscMessageError);
-  //document.querySelector('.success__button').removeEventListener('click', closeMessageSuccess);
-};
-
-const closeOnEscMessageSuccess = (evt) => {
-  if (evt.key === KEY_TAP) {
-    const messageSuccess = document.querySelector('.success');
-    document.body.removeChild(messageSuccess);
-    //window.removeEventListener('keydown', closeOnEscMessageError);
-  }
-};
-
-const closeMessageError = () => {
-  const messageError = document.querySelector('.error');
-  document.body.removeChild(messageError);
-  //window.removeEventListener('keydown', closeOnEscMessageError);
-  //document.querySelector('.error__button').removeEventListener('click', closeMessageError);
-};
-
-const closeOnEscMessageError = () => {
-  const messageError = document.querySelector('.error');
-  document.body.removeChild(messageError);
-  window.removeEventListener('keydown', closeOnEscMessageError);
-};
-
 const setDefaultImageSettings = () => {
   imagePreview.style.filter = 'none';
   imagePreview.style.transform = 'scale(1)';
   slider.classList.add('visually-hidden');
 };
 
-function onSubmit (evt) {
+const closeForm = () => {
+  removeSliderEvents();
+  setDefaultImageSettings();
+
+  imageEditForm.classList.add('hidden');
+  documentBody.classList.remove('modal-open');
+
+  form.reset();
+  pristine.reset();
+  scaleValue.value = '100%';
+
+  formButtonCancel.removeEventListener('click', onCloseButton);
+  window.removeEventListener('keydown', onEscKeydown);
+  form.removeEventListener('submit', onSubmit);
+};
+
+const closeSuccessMessage = () => {
+  const messageSuccess = document.querySelector('.success');
+  document.body.removeChild(messageSuccess);
+  window.removeEventListener('keydown', onEscMessageSuccess);
+};
+
+function onEscMessageSuccess(evt) {
+  if (evt.key === KEY_TAP) {
+    closeSuccessMessage();
+  }
+}
+
+const onCloseMessageSuccess = () => {
+  closeSuccessMessage();
+};
+
+
+const closeErrorMessage = () => {
+  const messageError = document.querySelector('.error');
+  document.body.removeChild(messageError);
+  window.removeEventListener('keydown', onEscMessageError);
+  window.addEventListener('keydown', onEscKeydown);
+};
+
+function onEscMessageError(evt) {
+  if (evt.key === KEY_TAP) {
+    closeErrorMessage();
+  }
+}
+
+const onCloseMessageError = () => {
+  closeErrorMessage();
+};
+
+const showSuccessMessage = () => {
+  closeForm();
+  document.body.appendChild(raiseUploadSuccess());
+  document.querySelector('.success__button').addEventListener('click', onCloseMessageSuccess);
+  window.addEventListener('keydown', onEscMessageSuccess);
+};
+
+const showErrorMessage = () => {
+  document.body.appendChild(raiseUploadError());
+  document.querySelector('.error__button').addEventListener('click', onCloseMessageError);
+  window.addEventListener('keydown', onEscMessageError);
+  window.removeEventListener('keydown', onEscKeydown);
+};
+
+function onSubmit(evt) {
   evt.preventDefault();
   const isValid = pristine.validate();
   if (isValid) {
@@ -140,23 +169,12 @@ function onSubmit (evt) {
     )
       .then((response) => {
         if (response.ok) {
-          setDefaultImageSettings();
-          closeForm();
-          document.body.appendChild(raiseUploadSuccess());
-          document.querySelector('.success__button').addEventListener('click', closeMessageSuccess);
-          window.addEventListener('keydown', closeOnEscMessageSuccess);
-
+          showSuccessMessage();
         } else {
-          document.body.appendChild(raiseUploadError());
-          document.querySelector('.error__button').addEventListener('click', closeMessageError);
-          window.addEventListener('keydown', closeOnEscMessageError);
+          showErrorMessage();
         }
       })
-      .catch(() => {
-        document.body.appendChild(raiseUploadError());
-        document.querySelector('.error__button').addEventListener('click', closeMessageError);
-        window.addEventListener('keydown', closeOnEscMessageError);
-    });
+      .catch(showErrorMessage);
   }
 }
 
@@ -171,15 +189,13 @@ const onInputChange = () => {
   window.addEventListener('keydown', onEscKeydown);
 };
 
-function onCloseButton () {
+function onCloseButton() {
   closeForm();
-  setDefaultImageSettings();
 }
 
 function onEscKeydown(evt) {
   if ((evt.key === KEY_TAP) && (evt.target !== hashtags) && (evt.target !== commentField)) {
     closeForm();
-    setDefaultImageSettings();
   }
 }
 

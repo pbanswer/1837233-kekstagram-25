@@ -11,7 +11,6 @@ const moreCommentsButton = document.querySelector('.comments-loader');
 
 const openBigPic = (picture) => {
   let shownCommentsCount = 0;
-
   bigUserPic.classList.remove('hidden');
 
   bigPicImg.querySelector('img').src = picture.url;

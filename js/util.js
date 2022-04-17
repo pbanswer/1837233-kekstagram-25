@@ -15,4 +15,4 @@ const shuffleArray = (array) => {
   return shuffledArray;
 };
 
-export { debounce, shuffleArray };
+export {debounce, shuffleArray};

@@ -1,3 +1,6 @@
+const MAX_SCALE = 100;
+const MIN_SCALE = 25;
+const ADJUST_SCALE = 25;
 const scaleUpButton = document.querySelector('.scale__control--bigger');
 const scaleDownButton = document.querySelector('.scale__control--smaller');
 const scaleValue = document.querySelector('.scale__control--value');
@@ -14,16 +17,16 @@ const setImageScale = (val) => {
 
 const onScaleUpClick = () => {
   const scaleVal = Number.parseInt(scaleValue.value, 10);
-  if (scaleVal <= 75 && scaleVal >= 25) {
-    scaleValue.value = `${scaleVal + 25  }%`;
+  if (scaleVal < MAX_SCALE && scaleVal >= MIN_SCALE) {
+    scaleValue.value = `${scaleVal + ADJUST_SCALE  }%`;
     setImageScale(Number.parseInt(scaleValue.value, 10));
   }
 };
 
 const onScaleDownClick = () => {
   const scaleVal = Number.parseInt(scaleValue.value, 10);
-  if (scaleVal <= 100 && scaleVal > 25) {
-    scaleValue.value = `${scaleVal - 25  }%`;
+  if (scaleVal <= MAX_SCALE && scaleVal > MIN_SCALE) {
+    scaleValue.value = `${scaleVal - ADJUST_SCALE  }%`;
     setImageScale(Number.parseInt(scaleValue.value, 10));
   }
 };

@@ -23,11 +23,11 @@ const pristine = new window.Pristine(form, {
 
 const checkDuplicate = (tags) => {
   const duplicates = [];
-  const arrayLowerCase = [];
+  const lowerCaseTags = [];
   for(let i = 0; i < tags.length; i++) {
-    arrayLowerCase.push(tags[i].toLowerCase());
+    lowerCaseTags.push(tags[i].toLowerCase());
   }
-  const sortedTags = arrayLowerCase.sort();
+  const sortedTags = lowerCaseTags.sort();
   for (let i = 0; i < sortedTags.length; i++) {
     if (sortedTags[i + 1] === sortedTags[i]) {
       duplicates.push(sortedTags[i]);
@@ -47,8 +47,8 @@ const checkHashTag = () => {
   if (tags.length > MAX_TAGS_LENGTH) {
     return false;
   }
-  const arrForCheck = [''];
-  if (tags[0] === arrForCheck[0] && tags.length === 1) {
+  const emptyTags = [''];
+  if (tags[0] === emptyTags[0] && tags.length === 1) {
     return true;
   }
 

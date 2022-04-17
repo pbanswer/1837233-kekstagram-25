@@ -4,7 +4,7 @@ const closeDownloadError = () => {
   window.location.reload();
 };
 
-const createLoader = (onError) => () => fetch(
+const createLoader = (onError) => fetch(
   'https://25.javascript.pages.academy/kekstagram/data',
   {
     method: 'GET',
@@ -56,4 +56,5 @@ const raiseUploadSuccess = () => {
 };
 
 export {raiseUploadSuccess};
-export const loadImages = createLoader(raiseDownloadError);
+const imagesPromise = createLoader(raiseDownloadError);
+export const loadImages = () => imagesPromise;

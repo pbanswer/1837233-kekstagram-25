@@ -19,12 +19,12 @@ const cleanPictures = () => {
 
 const compare = (a, b) => b.comments.length - a.comments.length;
 
-const onWindowLoad = () => {
+/* const onWindowLoad = () => {
   filtersElement.classList.remove('img-filters--inactive');
   window.removeEventListener('load', onWindowLoad);
 };
 
-window.addEventListener('load', onWindowLoad);
+window.addEventListener('load', onWindowLoad); */
 
 
 const checkButtonClass = (evt) => {
